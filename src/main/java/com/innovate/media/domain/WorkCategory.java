@@ -8,20 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+@Entity
 @Getter
 @Setter
-@Entity
-public class Client {
-
+public class WorkCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String client_name;
-    private String password;
-    private String mailBox;
-    private String real_name;
-    private String mobile;
-    private Integer city_id;
-    private Integer company_id;
-    private Integer occupation_id;
+    private String category_name;
 }
