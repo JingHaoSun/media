@@ -63,7 +63,6 @@ public class WorkController {
         work.setWorkLabel(requestMap.get("work_label"));
         work.setVideo(requestMap.get("video"));
         work.setCover(requestMap.get("cover"));
-        work.setComment(requestMap.get("comment"));
         work.setClientId(Integer.valueOf(requestMap.get("client_id")));
         work.setCategoryId(Integer.valueOf(requestMap.get("category_id")));
         work.setCollect(Integer.valueOf(requestMap.get("collect")));
@@ -91,7 +90,6 @@ public class WorkController {
         work.setWorkLabel(requestMap.get("work_label"));
         work.setVideo(requestMap.get("video"));
         work.setCover(requestMap.get("cover"));
-        work.setComment(requestMap.get("comment"));
         work.setClientId(Integer.valueOf(requestMap.get("client_id")));
         work.setCategoryId(Integer.valueOf(requestMap.get("category_id")));
         work.setCollect(Integer.valueOf(requestMap.get("collect")));

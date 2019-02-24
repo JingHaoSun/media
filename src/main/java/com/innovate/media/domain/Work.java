@@ -22,7 +22,6 @@ public class Work {
     private String workLabel;
     private String video;
     private String cover;
-    private String comment;
     private int clientId;
     private int categoryId;
     private int collect;
