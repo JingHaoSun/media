@@ -6,10 +6,14 @@ import com.innovate.media.domain.Work;
 import com.innovate.media.domain.WorkCategory;
 import com.innovate.media.repository.WorkRepository;
 import com.innovate.media.utils.BaseResult;
+import com.innovate.media.utils.ChangeResultTypeUtils;
+import com.innovate.media.utils.FormatBeanUtils;
+import com.innovate.media.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +23,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,34 +31,47 @@ import java.util.Optional;
 public class WorkController {
     @Autowired
     private WorkRepository workRepository;
-    @PostMapping(path = "/getAllWork")
-    public Page<Work> getPage(@RequestParam("pageNum")int pageNum, @RequestParam("pageLimit")int pageLimit){
-        Pageable pageable = PageRequest.of(pageNum - 1, pageLimit);
-        return workRepository.findAll(pageable);
+    @PostMapping(path = "/getAllWorkList")
+    public PageBean getPage(@RequestParam("page")int pageNum, @RequestParam("rows")int pageLimit,
+                            @RequestParam("order")String order){
+        Pageable pageable = PageRequest.of(pageNum - 1, pageLimit, Sort.Direction.ASC, order);
+        Page<Work> page = workRepository.findAll(pageable);
+        PageBean pageBean = new PageBean();
+        pageBean.setTotal(page.getNumberOfElements());
+        List<Map> list = ChangeResultTypeUtils.changeWorkResultType(page.getContent());
+        pageBean.setRows(list);
+        return pageBean;
     }
     @PostMapping("/getSimpleWork")
-    public Optional<Work> getSimpleWork(@RequestParam("id")Long id){
-        return workRepository.findById(id);
+    public Map findAdmin(@RequestParam("id")Long id){
+        Optional<Work> optional = workRepository.findById(id);
+        Map map = null;
+        try{
+             map = FormatBeanUtils.formatBean(optional.get());
+        }catch (Exception e){
+            return null;
+        }
+        return map;
     }
 
     @PostMapping("/addWork")
     public BaseResult addWork(@RequestParam Map<String, String> requestMap) throws ParseException {
         Work work = new Work();
-        work.setWork_name(requestMap.get("work_name"));
+        work.setWorkName(requestMap.get("work_name"));
         work.setDescription(requestMap.get("description"));
         work.setPicture(requestMap.get("picture"));
-        work.setWork_label(requestMap.get("work_label"));
+        work.setWorkLabel(requestMap.get("work_label"));
         work.setVideo(requestMap.get("video"));
         work.setCover(requestMap.get("cover"));
         work.setComment(requestMap.get("comment"));
-        work.setClient_id(Integer.valueOf(requestMap.get("client_id")));
-        work.setCategory_id(Integer.valueOf(requestMap.get("category_id")));
+        work.setClientId(Integer.valueOf(requestMap.get("client_id")));
+        work.setCategoryId(Integer.valueOf(requestMap.get("category_id")));
         work.setCollect(Integer.valueOf(requestMap.get("collect")));
         work.setLikes(Integer.valueOf(requestMap.get("likes")));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dstr = requestMap.get("release_time");
         java.util.Date d = sdf.parse(dstr);
-        work.setRelease_time(new java.sql.Date(d.getTime()));
+        work.setReleaseTime(new java.sql.Date(d.getTime()));
         System.out.println(new java.sql.Date(d.getTime()));
         Work work1 = workRepository.save(work);
         if(work1 != null){
@@ -67,21 +85,21 @@ public class WorkController {
     public BaseResult updateWork(@RequestParam Map<String, String> requestMap) throws ParseException {
         Work work = new Work();
         work.setId(Long.valueOf(requestMap.get("id")));
-        work.setWork_name(requestMap.get("work_name"));
+        work.setWorkName(requestMap.get("work_name"));
         work.setDescription(requestMap.get("description"));
         work.setPicture(requestMap.get("picture"));
-        work.setWork_label(requestMap.get("work_label"));
+        work.setWorkLabel(requestMap.get("work_label"));
         work.setVideo(requestMap.get("video"));
         work.setCover(requestMap.get("cover"));
         work.setComment(requestMap.get("comment"));
-        work.setClient_id(Integer.valueOf(requestMap.get("client_id")));
-        work.setCategory_id(Integer.valueOf(requestMap.get("category_id")));
+        work.setClientId(Integer.valueOf(requestMap.get("client_id")));
+        work.setCategoryId(Integer.valueOf(requestMap.get("category_id")));
         work.setCollect(Integer.valueOf(requestMap.get("collect")));
         work.setLikes(Integer.valueOf(requestMap.get("likes")));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dstr = requestMap.get("release_time");
         java.util.Date d = sdf.parse(dstr);
-        work.setRelease_time(new java.sql.Date(d.getTime()));
+        work.setReleaseTime(new java.sql.Date(d.getTime()));
         Work work1 = workRepository.save(work);
         if(work1 != null){
             return BaseResult.result(ResultConstant.SUCCESS, ConstantMessage.UPDATE_SUCCESS_MESSAGE);

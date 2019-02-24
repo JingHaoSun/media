@@ -8,10 +8,6 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 public class MediaApplication {
-    @PostConstruct
-    void started() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }
     public static void main(String[] args) {
         SpringApplication.run(MediaApplication.class, args);
     }

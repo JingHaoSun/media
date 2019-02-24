@@ -21,13 +21,8 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp comment_time;
-    private int work_id;
-    private int from_uid;
+    private Timestamp commentTime;
+    private int workId;
+    private int fromUid;
     private String content;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    public Timestamp getComment_time() {
-        return comment_time;
-    }
 }

@@ -16,12 +16,12 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String client_name;
+    private String clientName;
     private String password;
     private String mailBox;
-    private String real_name;
+    private String realName;
     private String mobile;
-    private Integer city_id;
-    private Integer company_id;
-    private Integer occupation_id;
+    private Integer cityId;
+    private Integer companyId;
+    private Integer occupationId;
 }

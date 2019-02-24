@@ -15,5 +15,5 @@ public class WorkCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String category_name;
+    private String categoryName;
 }

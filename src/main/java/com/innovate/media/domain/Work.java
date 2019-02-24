@@ -16,16 +16,16 @@ public class Work {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String work_name;
+    private String workName;
     private String description;
     private String picture;
-    private String work_label;
+    private String workLabel;
     private String video;
     private String cover;
     private String comment;
-    private int client_id;
-    private int category_id;
+    private int clientId;
+    private int categoryId;
     private int collect;
     private int likes;
-    private Date release_time;
+    private Date releaseTime;
 }

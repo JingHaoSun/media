@@ -4,7 +4,7 @@ spring:
       enable: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/media?&useUnicode=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/media?&useUnicode=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
     hikari:
       username: root
       password: 123admin

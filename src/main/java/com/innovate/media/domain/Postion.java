@@ -16,13 +16,13 @@ public class Postion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int client_id;
-    private String postion_name;
+    private int clientId;
+    private String postionName;
     private int salary;
     private int workage;
     private String description;
     private int recruitment;
-    private String postion_label;
+    private String postionLabel;
     private String contact;
     private String phone;
 }

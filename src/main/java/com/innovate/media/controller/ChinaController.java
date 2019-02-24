@@ -2,20 +2,23 @@ package com.innovate.media.controller;
 
 import com.innovate.media.constant.ConstantMessage;
 import com.innovate.media.constant.ResultConstant;
-import com.innovate.media.domain.China;
-import com.innovate.media.domain.Client;
-import com.innovate.media.domain.Company;
+import com.innovate.media.domain.*;
 import com.innovate.media.repository.ChinaRepository;
 import com.innovate.media.utils.BaseResult;
+import com.innovate.media.utils.ChangeResultTypeUtils;
+import com.innovate.media.utils.FormatBeanUtils;
+import com.innovate.media.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,9 +27,15 @@ public class ChinaController {
     @Autowired
     private ChinaRepository chinaRepository;
     @PostMapping(path = "/getChinaList")
-    public Page<China> getPage(@RequestParam("pageNum")int pageNum, @RequestParam("pageLimit")int pageLimit){
-        Pageable pageable = PageRequest.of(pageNum - 1, pageLimit);
-        return chinaRepository.findAll(pageable);
+    public PageBean getPage(@RequestParam("page")int pageNum, @RequestParam("rows")int pageLimit,
+                            @RequestParam("order")String order){
+        Pageable pageable = PageRequest.of(pageNum - 1, pageLimit, Sort.Direction.ASC, order);
+        Page<China> page = chinaRepository.findAll(pageable);
+        PageBean pageBean = new PageBean();
+        pageBean.setTotal(page.getNumberOfElements());
+        List<Map> list = ChangeResultTypeUtils.changeChinaResultType(page.getContent());
+        pageBean.setRows(list);
+        return pageBean;
     }
     @PostMapping(value="/addOrUpdateChina")
     public BaseResult addChina(@RequestParam Map<String, String> requestMap){
@@ -47,8 +56,15 @@ public class ChinaController {
         return BaseResult.result(ResultConstant.SUCCESS, ConstantMessage.DELETE_SUCCESS_MESSAGE);
     }
 
-    @PostMapping("/findChina")
-    public Optional<China> findChina(@RequestParam("id")Long id){
-        return chinaRepository.findById(id);
+    @PostMapping("/getSimpleChina")
+    public Map getSimpleChina(@RequestParam("id")Long id){
+        Optional<China> optional = chinaRepository.findById(id);
+        Map map = null;
+        try{
+            map = FormatBeanUtils.formatBean(optional.get());
+        }catch (Exception e){
+            return null;
+        }
+        return map;
     }
 }

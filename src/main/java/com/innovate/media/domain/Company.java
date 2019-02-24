@@ -15,11 +15,11 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String company_name;
+    private String companyName;
     private String logo;
     private String description;
-    private String detail_address;
-    private String company_label;
+    private String detailAddress;
+    private String companyLabel;
     private int scale;
-    private int china_id;
+    private int chinaId;
 }
